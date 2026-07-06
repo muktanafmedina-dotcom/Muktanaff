@@ -139,7 +139,7 @@ export default function TV({ id }: { id: string }) {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 1.05 }}
                 transition={{ duration: 1.5, ease: "easeOut" }}
-                className="w-full flex flex-col items-center justify-center gap-[3vh] lg:gap-[5vh]"
+                className="w-full flex flex-col items-center justify-center gap-[1.5vh] lg:gap-[3vh]"
               >
                 <h2 className="text-[clamp(3rem,8vmin,12rem)] font-serif text-white/95 font-bold drop-shadow-2xl leading-tight text-center w-full">
                   مرحباً بكم
@@ -151,7 +151,7 @@ export default function TV({ id }: { id: string }) {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 1.5, delay: 0.5 }}
-                  className="text-[clamp(1.2rem,4vmin,5rem)] leading-[1.6] lg:leading-[1.8] text-white/90 font-serif font-medium w-full max-w-[90vw] mx-auto shadow-black drop-shadow-2xl px-4 text-center mt-[2vh]"
+                  className="text-[clamp(1.2rem,4vmin,5rem)] leading-[1.6] lg:leading-[1.8] text-white/90 font-serif font-medium w-full max-w-[90vw] mx-auto shadow-black drop-shadow-2xl px-4 text-center mt-[1vh]"
                 >
                   {chaletData.welcomeMessage?.trim() ? (
                     chaletData.welcomeMessage.split('\n').map((line, i) => (
@@ -174,12 +174,12 @@ export default function TV({ id }: { id: string }) {
                 key="empty"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="w-full flex flex-col items-center justify-center gap-[4vh] lg:gap-[6vh]"
+                className="w-full flex flex-col items-center justify-center gap-[2vh] lg:gap-[4vh]"
               >
                 <h2 className="text-[clamp(2.5rem,8vmin,12rem)] font-serif text-white/90 font-bold drop-shadow-2xl leading-tight text-center w-full">
                   مرحباً بكم في شاليهات مكتنف
                 </h2>
-                <p className="text-[clamp(1.5rem,5vmin,6rem)] leading-[1.6] lg:leading-[1.8] text-white/80 font-serif font-light text-center w-full">
+                <p className="text-[clamp(1.5rem,5vmin,6rem)] leading-[1.6] lg:leading-[1.8] text-white/80 font-serif font-light text-center w-full mt-2">
                   في انتظار ضيوفنا الكرام...
                 </p>
               </motion.div>
@@ -192,40 +192,40 @@ export default function TV({ id }: { id: string }) {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.5, delay: 1 }}
-          className="grid grid-cols-3 gap-3 lg:gap-6 shrink-0"
+          className="grid grid-cols-3 gap-2 lg:gap-6 shrink-0 mt-2"
         >
           {/* Door Password Card */}
-          <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl lg:rounded-3xl p-3 lg:p-6 flex flex-col items-center text-center shadow-2xl relative overflow-hidden group">
+          <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-2 lg:p-4 flex flex-col items-center text-center shadow-2xl relative overflow-hidden group">
             <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            <div className="w-8 h-8 lg:w-14 lg:h-14 bg-white/10 rounded-xl lg:rounded-2xl flex items-center justify-center mb-2 lg:mb-4 text-amber-200">
-              <Key className="w-4 h-4 lg:w-7 lg:h-7" />
+            <div className="w-6 h-6 lg:w-10 lg:h-10 bg-white/10 rounded-lg lg:rounded-xl flex items-center justify-center mb-1 lg:mb-2 text-amber-200 shrink-0">
+              <Key className="w-3 h-3 lg:w-5 lg:h-5" />
             </div>
-            <h4 className="text-[10px] lg:text-xl text-white/70 mb-1 lg:mb-2 whitespace-nowrap">كلمة مرور الباب</h4>
-            <p className="text-sm lg:text-3xl font-medium tracking-widest text-white dir-ltr">
+            <h4 className="text-[clamp(0.7rem,2.5vmin,1.2rem)] text-white/70 mb-0.5 lg:mb-1 whitespace-nowrap">كلمة مرور الباب</h4>
+            <p className="text-[clamp(1rem,4vmin,2rem)] font-medium tracking-widest text-white dir-ltr leading-none mt-1">
               {chaletData?.doorPassword || "----"}
             </p>
           </div>
 
           {/* Wi-Fi Card */}
-          <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl lg:rounded-3xl p-3 lg:p-6 flex flex-col items-center text-center shadow-2xl relative overflow-hidden group">
+          <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-2 lg:p-4 flex flex-col items-center text-center shadow-2xl relative overflow-hidden group">
             <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            <div className="w-8 h-8 lg:w-14 lg:h-14 bg-white/10 rounded-xl lg:rounded-2xl flex items-center justify-center mb-2 lg:mb-4 text-blue-300">
-              <Wifi className="w-4 h-4 lg:w-7 lg:h-7" />
+            <div className="w-6 h-6 lg:w-10 lg:h-10 bg-white/10 rounded-lg lg:rounded-xl flex items-center justify-center mb-1 lg:mb-2 text-blue-300 shrink-0">
+              <Wifi className="w-3 h-3 lg:w-5 lg:h-5" />
             </div>
-            <h4 className="text-[10px] lg:text-xl text-white/70 mb-1 lg:mb-2 whitespace-nowrap">شبكة Wi-Fi</h4>
-            <p className="text-sm lg:text-3xl font-medium tracking-wider text-white dir-ltr">
+            <h4 className="text-[clamp(0.7rem,2.5vmin,1.2rem)] text-white/70 mb-0.5 lg:mb-1 whitespace-nowrap">شبكة Wi-Fi</h4>
+            <p className="text-[clamp(1rem,4vmin,2rem)] font-medium tracking-wider text-white dir-ltr leading-none mt-1">
               {chaletData?.wifiPassword || "----"}
             </p>
           </div>
 
           {/* Admin Phone Card */}
-          <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl lg:rounded-3xl p-3 lg:p-6 flex flex-col items-center text-center shadow-2xl relative overflow-hidden group">
+          <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-2 lg:p-4 flex flex-col items-center text-center shadow-2xl relative overflow-hidden group">
             <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            <div className="w-8 h-8 lg:w-14 lg:h-14 bg-white/10 rounded-xl lg:rounded-2xl flex items-center justify-center mb-2 lg:mb-4 text-emerald-300">
-              <Phone className="w-4 h-4 lg:w-7 lg:h-7" />
+            <div className="w-6 h-6 lg:w-10 lg:h-10 bg-white/10 rounded-lg lg:rounded-xl flex items-center justify-center mb-1 lg:mb-2 text-emerald-300 shrink-0">
+              <Phone className="w-3 h-3 lg:w-5 lg:h-5" />
             </div>
-            <h4 className="text-[10px] lg:text-xl text-white/70 mb-1 lg:mb-2 whitespace-nowrap">التواصل للإدارة</h4>
-            <p className="text-sm lg:text-3xl font-medium tracking-widest text-white dir-ltr">
+            <h4 className="text-[clamp(0.7rem,2.5vmin,1.2rem)] text-white/70 mb-0.5 lg:mb-1 whitespace-nowrap">التواصل للإدارة</h4>
+            <p className="text-[clamp(1rem,4vmin,2rem)] font-medium tracking-widest text-white dir-ltr leading-none mt-1">
               {chaletData?.adminPhone || "----"}
             </p>
           </div>
