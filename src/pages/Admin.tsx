@@ -30,35 +30,42 @@ export default function Admin() {
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-slate-950 flex items-center justify-center p-4 text-slate-100 font-sans">
+      <div dir="rtl" className="min-h-screen bg-slate-950 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900 via-slate-950 to-black flex items-center justify-center p-4 text-slate-100 font-sans">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-slate-900/50 backdrop-blur-xl p-8 rounded-2xl border border-slate-800 shadow-2xl w-full max-w-md"
+          className="bg-slate-900/40 backdrop-blur-2xl p-8 md:p-10 rounded-3xl border border-slate-800/60 shadow-2xl w-full max-w-md relative overflow-hidden"
         >
-          <div className="flex flex-col items-center mb-8">
-            <div className="w-16 h-16 bg-blue-500/10 rounded-full flex items-center justify-center mb-4">
-              <Lock className="w-8 h-8 text-blue-400" />
+          {/* Decorative glow */}
+          <div className="absolute -top-24 -right-24 w-48 h-48 bg-blue-500/20 rounded-full blur-3xl pointer-events-none" />
+          
+          <div className="flex flex-col items-center mb-10 relative z-10">
+            <div className="w-20 h-20 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-2xl flex items-center justify-center mb-6 border border-white/5 shadow-inner">
+              <Lock className="w-10 h-10 text-blue-400" />
             </div>
-            <h1 className="text-2xl font-bold font-serif mb-2 text-center">إدارة شاليهات مكتنف</h1>
-            <p className="text-slate-400 text-sm text-center">الرجاء إدخال كلمة المرور للوصول إلى لوحة التحكم</p>
+            <h1 className="text-3xl font-bold font-serif mb-3 text-center tracking-tight">إدارة شاليهات مكتنف</h1>
+            <p className="text-slate-400 text-center">الرجاء إدخال كلمة المرور للوصول إلى لوحة التحكم</p>
           </div>
           
-          <form onSubmit={handleLogin} className="space-y-4">
+          <form onSubmit={handleLogin} className="space-y-6 relative z-10">
             <div>
               <input
                 type="password"
                 value={passwordInput}
                 onChange={(e) => setPasswordInput(e.target.value)}
                 placeholder="كلمة المرور"
-                className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-center text-lg focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all dir-ltr"
+                className="w-full bg-slate-950/50 border border-slate-700/50 rounded-2xl px-5 py-4 text-center text-lg focus:outline-none focus:border-blue-500/80 focus:ring-2 focus:ring-blue-500/20 transition-all placeholder:text-slate-500"
                 dir="ltr"
               />
             </div>
-            {error && <p className="text-red-400 text-sm text-center">{error}</p>}
+            {error && (
+              <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-red-400 text-sm text-center">
+                {error}
+              </motion.p>
+            )}
             <button
               type="submit"
-              className="w-full bg-blue-600 hover:bg-blue-500 text-white rounded-xl px-4 py-3 font-medium transition-colors"
+              className="w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white rounded-2xl px-5 py-4 font-semibold text-lg transition-all shadow-lg shadow-blue-500/25 active:scale-[0.98]"
             >
               دخول
             </button>
@@ -136,55 +143,57 @@ function AdminDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-200 p-6 font-sans">
-      <div className="max-w-5xl mx-auto">
-        <header className="flex items-center justify-between mb-10 pb-6 border-b border-slate-800">
-          <div>
-            <h1 className="text-3xl font-bold font-serif text-white">إدارة شاليهات مكتنف</h1>
+    <div dir="rtl" className="min-h-screen bg-slate-950 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900 via-slate-950 to-black text-slate-200 p-4 md:p-6 lg:p-8 font-sans">
+      <div className="max-w-6xl mx-auto">
+        <header className="flex flex-col md:flex-row items-center justify-between mb-8 md:mb-12 pb-6 border-b border-slate-800/60">
+          <div className="text-center md:text-right mb-4 md:mb-0">
+            <h1 className="text-3xl md:text-4xl font-bold font-serif text-white tracking-tight">إدارة شاليهات مكتنف</h1>
             <p className="text-slate-400 mt-2">لوحة التحكم السريعة لتحديث بيانات الضيوف والشاشات</p>
           </div>
         </header>
 
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+        <div className="flex flex-col lg:flex-row gap-6 lg:gap-10">
           {/* Sidebar - Chalet Selection */}
-          <div className="md:col-span-4 lg:col-span-3 space-y-3">
-            <h2 className="text-lg font-semibold mb-4 text-slate-300">اختر الشاليه</h2>
-            {CHALETS.map((chalet, index) => (
-              <button
-                key={chalet}
-                onClick={() => setSelectedChalet(chalet)}
-                className={`w-full flex items-center gap-3 p-4 rounded-xl border text-right transition-all ${
-                  selectedChalet === chalet
-                    ? "bg-blue-600/10 border-blue-500/50 text-blue-400"
-                    : "bg-slate-900/50 border-slate-800 text-slate-400 hover:bg-slate-900 hover:border-slate-700"
-                }`}
-              >
-                <div className={`p-2 rounded-lg ${selectedChalet === chalet ? 'bg-blue-500/20' : 'bg-slate-800'}`}>
-                  <Home className="w-5 h-5" />
-                </div>
-                <span className="font-medium text-lg">شاليه {index + 1}</span>
-              </button>
-            ))}
+          <div className="lg:w-1/3 xl:w-1/4 flex-shrink-0">
+            <h2 className="text-lg font-semibold mb-4 text-slate-300 hidden lg:block">اختر الشاليه</h2>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-1 gap-3">
+              {CHALETS.map((chalet, index) => (
+                <button
+                  key={chalet}
+                  onClick={() => setSelectedChalet(chalet)}
+                  className={`w-full flex items-center justify-center lg:justify-start gap-3 p-4 rounded-2xl border transition-all ${
+                    selectedChalet === chalet
+                      ? "bg-blue-600/15 border-blue-500/50 text-blue-400 shadow-[0_0_15px_rgba(59,130,246,0.15)]"
+                      : "bg-slate-900/40 border-slate-800/60 text-slate-400 hover:bg-slate-800/60 hover:border-slate-700 hover:text-slate-200"
+                  }`}
+                >
+                  <div className={`p-2 rounded-xl hidden sm:block ${selectedChalet === chalet ? 'bg-blue-500/20' : 'bg-slate-800/50'}`}>
+                    <Home className="w-5 h-5" />
+                  </div>
+                  <span className="font-semibold text-lg whitespace-nowrap">شاليه {index + 1}</span>
+                </button>
+              ))}
+            </div>
           </div>
 
           {/* Main Panel - Edit Form */}
-          <div className="md:col-span-8 lg:col-span-9">
+          <div className="lg:w-2/3 xl:w-3/4">
             {selectedChalet ? (
               <motion.div 
                 key={selectedChalet}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                className="bg-slate-900/40 border border-slate-800 rounded-2xl p-6 lg:p-8"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-slate-900/40 backdrop-blur-xl border border-slate-800/60 rounded-3xl p-6 md:p-8 lg:p-10 shadow-2xl"
               >
-                <div className="flex items-center justify-between mb-8">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 pb-6 border-b border-slate-800/60 gap-4">
                   <h2 className="text-2xl font-bold text-white flex items-center gap-3">
-                    <span className="bg-blue-600 w-3 h-8 rounded-full inline-block"></span>
+                    <span className="bg-blue-500 w-2 h-8 rounded-full inline-block shadow-[0_0_10px_rgba(59,130,246,0.5)]"></span>
                     إعدادات {selectedChalet.replace('chalet', 'شاليه ')}
                   </h2>
                   <a
                     href={`/tv${selectedChalet.replace('chalet', '')}`}
                     target="_blank"
-                    className="text-sm bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 border border-blue-500/20 px-4 py-2 rounded-lg transition-colors flex items-center gap-2"
+                    className="text-sm bg-slate-800/50 hover:bg-slate-700/50 text-white border border-slate-700 px-5 py-2.5 rounded-xl transition-colors flex items-center gap-2 font-medium"
                   >
                     <Monitor className="w-4 h-4" />
                     فتح الشاشة
@@ -192,14 +201,14 @@ function AdminDashboard() {
                 </div>
 
                 {isLoading ? (
-                  <div className="flex items-center justify-center py-20">
-                    <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
+                  <div className="flex items-center justify-center py-32">
+                    <Loader2 className="w-10 h-10 animate-spin text-blue-500" />
                   </div>
                 ) : (
                   <form onSubmit={handleSave} className="space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="space-y-2">
-                        <label className="flex items-center gap-2 text-slate-300 font-medium">
+                        <label className="flex items-center gap-2 text-slate-300 font-medium ml-2">
                           <User className="w-4 h-4 text-slate-500" />
                           اسم الزوج والزوجة
                         </label>
@@ -208,12 +217,12 @@ function AdminDashboard() {
                           value={chaletData.guestName}
                           onChange={(e) => setChaletData({...chaletData, guestName: e.target.value})}
                           placeholder="مثال: محمد وسارة"
-                          className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
+                          className="w-full bg-slate-950/50 border border-slate-800 rounded-2xl px-5 py-4 focus:outline-none focus:border-blue-500/80 focus:ring-2 focus:ring-blue-500/20 transition-all text-white placeholder:text-slate-600"
                         />
                       </div>
 
                       <div className="space-y-2">
-                        <label className="flex items-center gap-2 text-slate-300 font-medium">
+                        <label className="flex items-center gap-2 text-slate-300 font-medium ml-2">
                           <Key className="w-4 h-4 text-slate-500" />
                           كلمة مرور الباب
                         </label>
@@ -222,12 +231,12 @@ function AdminDashboard() {
                           value={chaletData.doorPassword}
                           onChange={(e) => setChaletData({...chaletData, doorPassword: e.target.value})}
                           placeholder="مثال: 1234"
-                          className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
+                          className="w-full bg-slate-950/50 border border-slate-800 rounded-2xl px-5 py-4 focus:outline-none focus:border-blue-500/80 focus:ring-2 focus:ring-blue-500/20 transition-all text-white placeholder:text-slate-600"
                         />
                       </div>
 
                       <div className="space-y-2">
-                        <label className="flex items-center gap-2 text-slate-300 font-medium">
+                        <label className="flex items-center gap-2 text-slate-300 font-medium ml-2">
                           <Wifi className="w-4 h-4 text-slate-500" />
                           كلمة مرور Wi-Fi
                         </label>
@@ -236,12 +245,12 @@ function AdminDashboard() {
                           value={chaletData.wifiPassword}
                           onChange={(e) => setChaletData({...chaletData, wifiPassword: e.target.value})}
                           placeholder="مثال: Guest2024"
-                          className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
+                          className="w-full bg-slate-950/50 border border-slate-800 rounded-2xl px-5 py-4 focus:outline-none focus:border-blue-500/80 focus:ring-2 focus:ring-blue-500/20 transition-all text-white placeholder:text-slate-600"
                         />
                       </div>
 
                       <div className="space-y-2">
-                        <label className="flex items-center gap-2 text-slate-300 font-medium">
+                        <label className="flex items-center gap-2 text-slate-300 font-medium ml-2">
                           <Phone className="w-4 h-4 text-slate-500" />
                           رقم التواصل مع الإدارة
                         </label>
@@ -250,13 +259,13 @@ function AdminDashboard() {
                           value={chaletData.adminPhone}
                           onChange={(e) => setChaletData({...chaletData, adminPhone: e.target.value})}
                           placeholder="مثال: 0500000000"
-                          className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
+                          className="w-full bg-slate-950/50 border border-slate-800 rounded-2xl px-5 py-4 focus:outline-none focus:border-blue-500/80 focus:ring-2 focus:ring-blue-500/20 transition-all text-white placeholder:text-slate-600"
                           dir="ltr"
                         />
                       </div>
 
                       <div className="space-y-2 md:col-span-2">
-                        <label className="flex items-center gap-2 text-slate-300 font-medium">
+                        <label className="flex items-center gap-2 text-slate-300 font-medium ml-2">
                           <MessageSquare className="w-4 h-4 text-slate-500" />
                           الرسالة الترحيبية (اختياري)
                         </label>
@@ -264,19 +273,19 @@ function AdminDashboard() {
                           value={chaletData.welcomeMessage || ''}
                           onChange={(e) => setChaletData({...chaletData, welcomeMessage: e.target.value})}
                           placeholder="اتركه فارغاً لاستخدام الرسالة الافتراضية..."
-                          className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all min-h-[120px] resize-y"
+                          className="w-full bg-slate-950/50 border border-slate-800 rounded-2xl px-5 py-4 focus:outline-none focus:border-blue-500/80 focus:ring-2 focus:ring-blue-500/20 transition-all min-h-[140px] resize-y text-white placeholder:text-slate-600"
                         />
                       </div>
                     </div>
 
-                    <div className="pt-6 border-t border-slate-800 flex items-center justify-end gap-4">
+                    <div className="pt-8 mt-8 border-t border-slate-800/60 flex items-center justify-between sm:justify-end gap-4">
                       {saveSuccess && (
                         <motion.span 
-                          initial={{ opacity: 0, x: -10 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          className="text-emerald-400 flex items-center gap-2 text-sm"
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className="text-emerald-400 flex items-center gap-2 text-sm font-medium"
                         >
-                          <Check className="w-4 h-4" />
+                          <Check className="w-5 h-5" />
                           تم الحفظ بنجاح
                         </motion.span>
                       )}
@@ -284,7 +293,7 @@ function AdminDashboard() {
                       <button
                         type="submit"
                         disabled={isSaving}
-                        className="bg-blue-600 hover:bg-blue-500 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-xl px-8 py-3 font-medium transition-colors flex items-center gap-2"
+                        className="bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-2xl px-8 py-4 font-semibold transition-all flex items-center gap-2 shadow-lg shadow-blue-500/25 active:scale-[0.98] w-full sm:w-auto justify-center"
                       >
                         {isSaving ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
                         حفظ التغييرات
@@ -294,11 +303,12 @@ function AdminDashboard() {
                 )}
               </motion.div>
             ) : (
-              <div className="h-full min-h-[400px] flex flex-col items-center justify-center border border-dashed border-slate-800 rounded-2xl bg-slate-900/20">
-                <div className="w-16 h-16 bg-slate-800/50 rounded-full flex items-center justify-center mb-4 text-slate-500">
-                  <Home className="w-8 h-8" />
+              <div className="h-full min-h-[500px] flex flex-col items-center justify-center border-2 border-dashed border-slate-800/60 rounded-3xl bg-slate-900/20 p-8 text-center">
+                <div className="w-20 h-20 bg-slate-800/40 rounded-full flex items-center justify-center mb-6 text-slate-500 shadow-inner">
+                  <Home className="w-10 h-10" />
                 </div>
-                <p className="text-slate-400 text-lg">الرجاء اختيار شاليه من القائمة لعرض وتعديل بياناته</p>
+                <h3 className="text-xl font-bold text-slate-300 mb-2">لم يتم اختيار شاليه</h3>
+                <p className="text-slate-500 max-w-sm">الرجاء اختيار شاليه من القائمة لعرض وتعديل بيانات الضيوف وكلمات المرور.</p>
               </div>
             )}
           </div>

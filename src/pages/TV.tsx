@@ -78,7 +78,7 @@ export default function TV({ id }: { id: string }) {
   const backgroundUrl = "https://images.unsplash.com/photo-1496857239036-1fb137683000?q=80&w=3540&auto=format&fit=crop";
 
   return (
-    <div className="relative w-screen h-screen overflow-hidden bg-slate-950 font-sans select-none">
+    <div className="relative w-screen h-[100dvh] overflow-hidden bg-slate-950 font-sans select-none">
       {/* Background with overlay */}
       <div 
         className="absolute inset-0 bg-cover bg-center z-0 animate-slow-pan"
@@ -90,22 +90,22 @@ export default function TV({ id }: { id: string }) {
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40 z-10" />
 
       {/* Main Content */}
-      <div className="relative z-20 h-full w-full flex flex-col p-12 lg:p-24 text-white">
+      <div className="relative z-20 h-full w-full flex flex-col p-6 lg:p-12 text-white">
         
         {/* Header - Logo and Time */}
-        <header className="flex justify-between items-start w-full mb-auto">
+        <header className="flex justify-between items-start w-full shrink-0">
           <motion.div 
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1 }}
-            className="flex items-center gap-4"
+            className="flex items-center gap-3 lg:gap-4"
           >
-            <div className="w-16 h-16 border-2 border-white/80 rounded-full flex items-center justify-center backdrop-blur-md bg-white/10">
-              <span className="font-serif text-3xl text-white">م</span>
+            <div className="w-12 h-12 lg:w-16 lg:h-16 border-2 border-white/80 rounded-full flex items-center justify-center backdrop-blur-md bg-white/10">
+              <span className="font-serif text-2xl lg:text-3xl text-white">م</span>
             </div>
             <div>
-              <h1 className="text-3xl font-bold font-serif tracking-widest text-white/90">مكتنف</h1>
-              <p className="text-sm tracking-[0.3em] text-white/60 uppercase font-sans">Muktanaf Chalets</p>
+              <h1 className="text-xl lg:text-3xl font-bold font-serif tracking-widest text-white/90">مكتنف</h1>
+              <p className="text-[10px] lg:text-sm tracking-[0.3em] text-white/60 uppercase font-sans">Muktanaf Chalets</p>
             </div>
           </motion.div>
           
@@ -113,24 +113,24 @@ export default function TV({ id }: { id: string }) {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.2 }}
-            className="flex flex-col items-end backdrop-blur-md bg-white/5 border border-white/10 px-6 py-4 rounded-2xl shadow-xl"
+            className="flex flex-col items-end backdrop-blur-md bg-white/5 border border-white/10 px-4 py-3 lg:px-6 lg:py-4 rounded-2xl shadow-xl"
           >
-            <div className="flex items-center gap-3">
-              <span className="text-4xl font-light tabular-nums tracking-wider dir-ltr">
+            <div className="flex items-center gap-2 lg:gap-3">
+              <span className="text-2xl lg:text-4xl font-light tabular-nums tracking-wider dir-ltr">
                 {format(currentTime, 'hh:mm', { locale: arSA })}
               </span>
-              <span className="text-xl font-medium text-white/70">
+              <span className="text-lg lg:text-xl font-medium text-white/70">
                 {format(currentTime, 'a', { locale: arSA })}
               </span>
             </div>
-            <span className="text-lg text-white/60 mt-1 font-serif">
+            <span className="text-sm lg:text-lg text-white/60 mt-1 font-serif hidden sm:block">
               {format(currentTime, 'EEEE، d MMMM yyyy', { locale: arSA })}
             </span>
           </motion.div>
         </header>
 
         {/* Center Welcome Message */}
-        <div className="flex-1 flex flex-col items-center justify-center text-center w-[90vw] mx-auto">
+        <div className="flex-1 flex flex-col items-center justify-center text-center w-[95vw] lg:w-[90vw] mx-auto min-h-0 overflow-hidden py-4">
           <AnimatePresence mode="wait">
             {chaletData?.guestName ? (
               <motion.div
@@ -139,20 +139,19 @@ export default function TV({ id }: { id: string }) {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 1.05 }}
                 transition={{ duration: 1.5, ease: "easeOut" }}
-                className="space-y-[4vh]"
+                className="space-y-[3vh] lg:space-y-[4vh] w-full"
               >
-                <h2 className="text-[clamp(4rem,7vw,12rem)] font-serif text-white/95 font-bold drop-shadow-2xl">
+                <h2 className="text-[clamp(3rem,8vw,10rem)] font-serif text-white/95 font-bold drop-shadow-2xl leading-none">
                   مرحباً بكم
                 </h2>
-                <h3 className="text-[clamp(3.5rem,6vw,10rem)] font-serif text-pink-200 drop-shadow-xl font-bold mt-4 mb-8">
+                <h3 className="text-[clamp(2.5rem,6vw,8rem)] font-serif text-pink-200 drop-shadow-xl font-bold mt-2 mb-4 leading-none">
                   {chaletData.guestName}
                 </h3>
                 <motion.div 
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 1.5, delay: 0.5 }}
-                  className="text-[clamp(2rem,3.5vw,6rem)] leading-relaxed text-white/90 font-serif font-medium w-full shadow-black drop-shadow-2xl"
-                  style={{ lineHeight: '1.8' }}
+                  className="text-[clamp(1.2rem,3vw,4.5rem)] leading-snug lg:leading-relaxed text-white/90 font-serif font-medium w-full shadow-black drop-shadow-2xl px-4"
                 >
                   {chaletData.welcomeMessage?.trim() ? (
                     chaletData.welcomeMessage.split('\n').map((line, i) => (
@@ -175,12 +174,12 @@ export default function TV({ id }: { id: string }) {
                 key="empty"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="space-y-[4vh]"
+                className="space-y-[4vh] w-full"
               >
-                <h2 className="text-[clamp(4rem,7vw,12rem)] font-serif text-white/90 font-bold drop-shadow-2xl">
+                <h2 className="text-[clamp(3rem,8vw,10rem)] font-serif text-white/90 font-bold drop-shadow-2xl leading-none">
                   مرحباً بكم في شاليهات مكتنف
                 </h2>
-                <p className="text-[clamp(2.5rem,4vw,7rem)] leading-relaxed text-white/80 font-serif font-light" style={{ lineHeight: '1.8' }}>
+                <p className="text-[clamp(2rem,5vw,6rem)] leading-snug lg:leading-relaxed text-white/80 font-serif font-light mt-4">
                   في انتظار ضيوفنا الكرام...
                 </p>
               </motion.div>
@@ -193,40 +192,40 @@ export default function TV({ id }: { id: string }) {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.5, delay: 1 }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-auto"
+          className="grid grid-cols-3 gap-3 lg:gap-6 shrink-0"
         >
           {/* Door Password Card */}
-          <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-3xl p-6 flex flex-col items-center text-center shadow-2xl relative overflow-hidden group">
+          <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl lg:rounded-3xl p-3 lg:p-6 flex flex-col items-center text-center shadow-2xl relative overflow-hidden group">
             <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            <div className="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center mb-4 text-amber-200">
-              <Key className="w-7 h-7" />
+            <div className="w-8 h-8 lg:w-14 lg:h-14 bg-white/10 rounded-xl lg:rounded-2xl flex items-center justify-center mb-2 lg:mb-4 text-amber-200">
+              <Key className="w-4 h-4 lg:w-7 lg:h-7" />
             </div>
-            <h4 className="text-xl text-white/70 mb-2">كلمة مرور الباب</h4>
-            <p className="text-3xl font-medium tracking-widest text-white dir-ltr">
+            <h4 className="text-[10px] lg:text-xl text-white/70 mb-1 lg:mb-2 whitespace-nowrap">كلمة مرور الباب</h4>
+            <p className="text-sm lg:text-3xl font-medium tracking-widest text-white dir-ltr">
               {chaletData?.doorPassword || "----"}
             </p>
           </div>
 
           {/* Wi-Fi Card */}
-          <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-3xl p-6 flex flex-col items-center text-center shadow-2xl relative overflow-hidden group">
+          <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl lg:rounded-3xl p-3 lg:p-6 flex flex-col items-center text-center shadow-2xl relative overflow-hidden group">
             <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            <div className="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center mb-4 text-blue-300">
-              <Wifi className="w-7 h-7" />
+            <div className="w-8 h-8 lg:w-14 lg:h-14 bg-white/10 rounded-xl lg:rounded-2xl flex items-center justify-center mb-2 lg:mb-4 text-blue-300">
+              <Wifi className="w-4 h-4 lg:w-7 lg:h-7" />
             </div>
-            <h4 className="text-xl text-white/70 mb-2">شبكة Wi-Fi</h4>
-            <p className="text-3xl font-medium tracking-wider text-white dir-ltr">
+            <h4 className="text-[10px] lg:text-xl text-white/70 mb-1 lg:mb-2 whitespace-nowrap">شبكة Wi-Fi</h4>
+            <p className="text-sm lg:text-3xl font-medium tracking-wider text-white dir-ltr">
               {chaletData?.wifiPassword || "----"}
             </p>
           </div>
 
           {/* Admin Phone Card */}
-          <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-3xl p-6 flex flex-col items-center text-center shadow-2xl relative overflow-hidden group">
+          <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl lg:rounded-3xl p-3 lg:p-6 flex flex-col items-center text-center shadow-2xl relative overflow-hidden group">
             <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            <div className="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center mb-4 text-emerald-300">
-              <Phone className="w-7 h-7" />
+            <div className="w-8 h-8 lg:w-14 lg:h-14 bg-white/10 rounded-xl lg:rounded-2xl flex items-center justify-center mb-2 lg:mb-4 text-emerald-300">
+              <Phone className="w-4 h-4 lg:w-7 lg:h-7" />
             </div>
-            <h4 className="text-xl text-white/70 mb-2">التواصل مع الإدارة</h4>
-            <p className="text-3xl font-medium tracking-widest text-white dir-ltr">
+            <h4 className="text-[10px] lg:text-xl text-white/70 mb-1 lg:mb-2 whitespace-nowrap">التواصل للإدارة</h4>
+            <p className="text-sm lg:text-3xl font-medium tracking-widest text-white dir-ltr">
               {chaletData?.adminPhone || "----"}
             </p>
           </div>
