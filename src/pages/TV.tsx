@@ -12,6 +12,7 @@ interface ChaletData {
   doorPassword: string;
   wifiPassword: string;
   adminPhone: string;
+  welcomeMessage?: string;
 }
 
 export default function TV({ id }: { id: string }) {
@@ -73,8 +74,8 @@ export default function TV({ id }: { id: string }) {
     };
   }, []);
 
-  // Background Image for luxury resort vibe
-  const backgroundUrl = "https://images.unsplash.com/photo-1542314831-c6a4d14faaf2?q=80&w=3540&auto=format&fit=crop";
+  // Background Image for luxury resort vibe (Roses)
+  const backgroundUrl = "https://images.unsplash.com/photo-1496857239036-1fb137683000?q=80&w=3540&auto=format&fit=crop";
 
   return (
     <div className="relative w-screen h-screen overflow-hidden bg-slate-950 font-sans select-none">
@@ -85,7 +86,7 @@ export default function TV({ id }: { id: string }) {
           backgroundImage: `url(${backgroundUrl})`
         }}
       />
-      <div className="absolute inset-0 bg-black/60 z-10 backdrop-blur-sm" />
+      <div className="absolute inset-0 bg-black/50 z-10 backdrop-blur-[2px]" />
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40 z-10" />
 
       {/* Main Content */}
@@ -122,14 +123,14 @@ export default function TV({ id }: { id: string }) {
                 {format(currentTime, 'a', { locale: arSA })}
               </span>
             </div>
-            <span className="text-lg text-white/60 mt-1">
+            <span className="text-lg text-white/60 mt-1 font-serif">
               {format(currentTime, 'EEEE، d MMMM yyyy', { locale: arSA })}
             </span>
           </motion.div>
         </header>
 
         {/* Center Welcome Message */}
-        <div className="flex-1 flex flex-col items-center justify-center text-center max-w-5xl mx-auto w-full">
+        <div className="flex-1 flex flex-col items-center justify-center text-center w-[90vw] mx-auto">
           <AnimatePresence mode="wait">
             {chaletData?.guestName ? (
               <motion.div
@@ -138,36 +139,48 @@ export default function TV({ id }: { id: string }) {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 1.05 }}
                 transition={{ duration: 1.5, ease: "easeOut" }}
-                className="space-y-6"
+                className="space-y-[4vh]"
               >
-                <h2 className="text-5xl lg:text-7xl font-serif text-white/90 font-bold drop-shadow-2xl">
+                <h2 className="text-[clamp(4rem,7vw,12rem)] font-serif text-white/95 font-bold drop-shadow-2xl">
                   مرحباً بكم
                 </h2>
-                <h3 className="text-4xl lg:text-6xl font-serif text-amber-200 drop-shadow-xl font-medium mt-4 mb-10">
-                  الأستاذ / {chaletData.guestName}
+                <h3 className="text-[clamp(3.5rem,6vw,10rem)] font-serif text-pink-200 drop-shadow-xl font-bold mt-4 mb-8">
+                  {chaletData.guestName}
                 </h3>
-                <motion.p 
+                <motion.div 
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 1.5, delay: 0.5 }}
-                  className="text-2xl lg:text-3xl leading-relaxed text-white/80 font-sans font-light max-w-4xl mx-auto shadow-black drop-shadow-md"
+                  className="text-[clamp(2rem,3.5vw,6rem)] leading-relaxed text-white/90 font-serif font-medium w-full shadow-black drop-shadow-2xl"
+                  style={{ lineHeight: '1.8' }}
                 >
-                  بين هدوء المكان وجمال اللحظات... يسعدنا أن نرحب بكم في شاليهات مكتنف. 
-                  نتمنى لكم إقامة مليئة بالراحة، والسكينة، والذكريات الجميلة التي تبقى في القلب. 
-                  أهلاً وسهلاً بكم... ونتمنى أن تكون هذه الليلة بداية لحكاية لا تُنسى.
-                </motion.p>
+                  {chaletData.welcomeMessage?.trim() ? (
+                    chaletData.welcomeMessage.split('\n').map((line, i) => (
+                      <span key={i}>
+                        {line}
+                        <br />
+                      </span>
+                    ))
+                  ) : (
+                    <>
+                      بين هدوء المكان وجمال اللحظات... يسعدنا أن نرحب بكم في شاليهات مكتنف.<br/>
+                      نتمنى لكم إقامة مليئة بالراحة، والسكينة، والذكريات الجميلة التي تبقى في القلب.<br/>
+                      أهلاً وسهلاً بكم... ونتمنى أن تكون هذه الليلة بداية لحكاية لا تُنسى.
+                    </>
+                  )}
+                </motion.div>
               </motion.div>
             ) : (
               <motion.div
                 key="empty"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="space-y-6"
+                className="space-y-[4vh]"
               >
-                <h2 className="text-5xl lg:text-7xl font-serif text-white/80 font-bold drop-shadow-2xl">
+                <h2 className="text-[clamp(4rem,7vw,12rem)] font-serif text-white/90 font-bold drop-shadow-2xl">
                   مرحباً بكم في شاليهات مكتنف
                 </h2>
-                <p className="text-2xl lg:text-3xl leading-relaxed text-white/70 font-sans font-light">
+                <p className="text-[clamp(2.5rem,4vw,7rem)] leading-relaxed text-white/80 font-serif font-light" style={{ lineHeight: '1.8' }}>
                   في انتظار ضيوفنا الكرام...
                 </p>
               </motion.div>

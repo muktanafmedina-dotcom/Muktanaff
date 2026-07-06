@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { db } from '../lib/firebase';
 import { doc, getDoc, updateDoc, setDoc } from 'firebase/firestore';
 import { motion } from 'framer-motion';
-import { Lock, Save, Wifi, Key, Phone, User, Home, Loader2, Check, Monitor } from 'lucide-react';
+import { Lock, Save, Wifi, Key, Phone, User, Home, Loader2, Check, Monitor, MessageSquare } from 'lucide-react';
 
 const ADMIN_PASSWORD = "جميلة";
 
@@ -11,6 +11,7 @@ interface ChaletData {
   doorPassword: string;
   wifiPassword: string;
   adminPhone: string;
+  welcomeMessage?: string;
 }
 
 export default function Admin() {
@@ -78,7 +79,8 @@ function AdminDashboard() {
     guestName: "",
     doorPassword: "",
     wifiPassword: "",
-    adminPhone: ""
+    adminPhone: "",
+    welcomeMessage: ""
   });
   const [isLoading, setIsLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -98,7 +100,8 @@ function AdminDashboard() {
           guestName: "",
           doorPassword: "",
           wifiPassword: "",
-          adminPhone: ""
+          adminPhone: "",
+          welcomeMessage: ""
         });
       }
     } catch (error) {
@@ -198,13 +201,13 @@ function AdminDashboard() {
                       <div className="space-y-2">
                         <label className="flex items-center gap-2 text-slate-300 font-medium">
                           <User className="w-4 h-4 text-slate-500" />
-                          اسم العميل
+                          اسم الزوج والزوجة
                         </label>
                         <input
                           type="text"
                           value={chaletData.guestName}
                           onChange={(e) => setChaletData({...chaletData, guestName: e.target.value})}
-                          placeholder="مثال: محمد عبدالله"
+                          placeholder="مثال: محمد وسارة"
                           className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
                         />
                       </div>
@@ -249,6 +252,19 @@ function AdminDashboard() {
                           placeholder="مثال: 0500000000"
                           className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
                           dir="ltr"
+                        />
+                      </div>
+
+                      <div className="space-y-2 md:col-span-2">
+                        <label className="flex items-center gap-2 text-slate-300 font-medium">
+                          <MessageSquare className="w-4 h-4 text-slate-500" />
+                          الرسالة الترحيبية (اختياري)
+                        </label>
+                        <textarea
+                          value={chaletData.welcomeMessage || ''}
+                          onChange={(e) => setChaletData({...chaletData, welcomeMessage: e.target.value})}
+                          placeholder="اتركه فارغاً لاستخدام الرسالة الافتراضية..."
+                          className="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all min-h-[120px] resize-y"
                         />
                       </div>
                     </div>
