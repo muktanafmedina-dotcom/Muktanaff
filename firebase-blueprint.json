@@ -1,0 +1,36 @@
+{
+  "collections": {
+    "chalets": {
+      "chalet1": {
+        "guestName": "",
+        "doorPassword": "",
+        "wifiPassword": "",
+        "adminPhone": ""
+      },
+      "chalet2": {
+        "guestName": "",
+        "doorPassword": "",
+        "wifiPassword": "",
+        "adminPhone": ""
+      },
+      "chalet3": {
+        "guestName": "",
+        "doorPassword": "",
+        "wifiPassword": "",
+        "adminPhone": ""
+      },
+      "chalet4": {
+        "guestName": "",
+        "doorPassword": "",
+        "wifiPassword": "",
+        "adminPhone": ""
+      },
+      "chalet5": {
+        "guestName": "",
+        "doorPassword": "",
+        "wifiPassword": "",
+        "adminPhone": ""
+      }
+    }
+  }
+}
