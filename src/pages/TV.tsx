@@ -78,7 +78,7 @@ export default function TV({ id }: { id: string }) {
   const backgroundUrl = "https://images.unsplash.com/photo-1496857239036-1fb137683000?q=80&w=3540&auto=format&fit=crop";
 
   return (
-    <div className="relative w-screen h-[100dvh] overflow-hidden bg-slate-950 font-sans select-none">
+    <div dir="rtl" className="relative w-screen h-[100dvh] overflow-hidden bg-slate-950 font-sans select-none flex flex-col">
       {/* Background with overlay */}
       <div 
         className="absolute inset-0 bg-cover bg-center z-0 animate-slow-pan"
@@ -90,7 +90,7 @@ export default function TV({ id }: { id: string }) {
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40 z-10" />
 
       {/* Main Content */}
-      <div className="relative z-20 h-full w-full flex flex-col p-6 lg:p-12 text-white">
+      <div className="relative z-20 h-full w-full flex flex-col p-6 lg:p-12 text-white justify-between">
         
         {/* Header - Logo and Time */}
         <header className="flex justify-between items-start w-full shrink-0">
@@ -130,7 +130,7 @@ export default function TV({ id }: { id: string }) {
         </header>
 
         {/* Center Welcome Message */}
-        <div className="flex-1 flex flex-col items-center justify-center text-center w-[95vw] lg:w-[90vw] mx-auto min-h-0 overflow-hidden py-4">
+        <div className="flex-1 flex flex-col items-center justify-center text-center w-full mx-auto min-h-0 py-8">
           <AnimatePresence mode="wait">
             {chaletData?.guestName ? (
               <motion.div
@@ -139,19 +139,19 @@ export default function TV({ id }: { id: string }) {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 1.05 }}
                 transition={{ duration: 1.5, ease: "easeOut" }}
-                className="space-y-[3vh] lg:space-y-[4vh] w-full"
+                className="w-full flex flex-col items-center justify-center gap-[3vh] lg:gap-[5vh]"
               >
-                <h2 className="text-[clamp(3rem,8vw,10rem)] font-serif text-white/95 font-bold drop-shadow-2xl leading-none">
+                <h2 className="text-[clamp(3rem,8vmin,12rem)] font-serif text-white/95 font-bold drop-shadow-2xl leading-tight text-center w-full">
                   مرحباً بكم
                 </h2>
-                <h3 className="text-[clamp(2.5rem,6vw,8rem)] font-serif text-pink-200 drop-shadow-xl font-bold mt-2 mb-4 leading-none">
+                <h3 className="text-[clamp(2.5rem,7vmin,10rem)] font-serif text-pink-200 drop-shadow-xl font-bold leading-tight text-center w-full">
                   {chaletData.guestName}
                 </h3>
                 <motion.div 
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 1.5, delay: 0.5 }}
-                  className="text-[clamp(1.2rem,3vw,4.5rem)] leading-snug lg:leading-relaxed text-white/90 font-serif font-medium w-full shadow-black drop-shadow-2xl px-4"
+                  className="text-[clamp(1.2rem,4vmin,5rem)] leading-[1.6] lg:leading-[1.8] text-white/90 font-serif font-medium w-full max-w-[90vw] mx-auto shadow-black drop-shadow-2xl px-4 text-center mt-[2vh]"
                 >
                   {chaletData.welcomeMessage?.trim() ? (
                     chaletData.welcomeMessage.split('\n').map((line, i) => (
@@ -174,12 +174,12 @@ export default function TV({ id }: { id: string }) {
                 key="empty"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="space-y-[4vh] w-full"
+                className="w-full flex flex-col items-center justify-center gap-[4vh] lg:gap-[6vh]"
               >
-                <h2 className="text-[clamp(3rem,8vw,10rem)] font-serif text-white/90 font-bold drop-shadow-2xl leading-none">
+                <h2 className="text-[clamp(2.5rem,8vmin,12rem)] font-serif text-white/90 font-bold drop-shadow-2xl leading-tight text-center w-full">
                   مرحباً بكم في شاليهات مكتنف
                 </h2>
-                <p className="text-[clamp(2rem,5vw,6rem)] leading-snug lg:leading-relaxed text-white/80 font-serif font-light mt-4">
+                <p className="text-[clamp(1.5rem,5vmin,6rem)] leading-[1.6] lg:leading-[1.8] text-white/80 font-serif font-light text-center w-full">
                   في انتظار ضيوفنا الكرام...
                 </p>
               </motion.div>
