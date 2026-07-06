@@ -3,7 +3,7 @@ import { Navigate } from 'react-router-dom';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Key, Wifi, Phone, Clock } from 'lucide-react';
+import { Key, Wifi, Phone, Clock, Maximize, Minimize, X, Menu, Info } from 'lucide-react';
 import { format } from 'date-fns';
 import { arSA } from 'date-fns/locale';
 
@@ -18,6 +18,8 @@ interface ChaletData {
 export default function TV({ id }: { id: string }) {
   const [chaletData, setChaletData] = useState<ChaletData | null>(null);
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   // Valid IDs: 1, 2, 3, 4, 5
   if (!id || !['1', '2', '3', '4', '5'].includes(id)) {
@@ -41,6 +43,26 @@ export default function TV({ id }: { id: string }) {
     }, 1000);
     return () => clearInterval(timer);
   }, []);
+
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
+  }, []);
+
+  const toggleFullscreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch((err) => {
+        console.error(`Error attempting to enable fullscreen: ${err.message}`);
+      });
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      }
+    }
+  };
 
   useEffect(() => {
     let wakeLock: any = null;
@@ -100,12 +122,12 @@ export default function TV({ id }: { id: string }) {
             transition={{ duration: 1 }}
             className="flex items-center gap-3 lg:gap-4"
           >
-            <div className="w-12 h-12 lg:w-16 lg:h-16 border-2 border-white/80 rounded-full flex items-center justify-center backdrop-blur-md bg-white/10">
-              <span className="font-serif text-2xl lg:text-3xl text-white">م</span>
+            <div className="w-10 h-10 lg:w-14 lg:h-14 border-2 border-white/80 rounded-full flex items-center justify-center backdrop-blur-md bg-white/10">
+              <span className="font-serif text-xl lg:text-2xl text-amber-300">م</span>
             </div>
             <div>
-              <h1 className="text-xl lg:text-3xl font-bold font-serif tracking-widest text-white/90">مكتنف</h1>
-              <p className="text-[10px] lg:text-sm tracking-[0.3em] text-white/60 uppercase font-sans">Muktanaf Chalets</p>
+              <h1 className="text-lg lg:text-2xl font-bold font-serif tracking-widest text-amber-300">مكتنف</h1>
+              <p className="text-[9px] lg:text-xs tracking-[0.3em] text-white/60 uppercase font-sans">Muktanaf Chalets</p>
             </div>
           </motion.div>
           
@@ -113,45 +135,62 @@ export default function TV({ id }: { id: string }) {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.2 }}
-            className="flex flex-col items-end backdrop-blur-md bg-white/5 border border-white/10 px-4 py-3 lg:px-6 lg:py-4 rounded-2xl shadow-xl"
+            className="flex items-center gap-3 lg:gap-4"
           >
-            <div className="flex items-center gap-2 lg:gap-3">
-              <span className="text-2xl lg:text-4xl font-light tabular-nums tracking-wider dir-ltr">
-                {format(currentTime, 'hh:mm', { locale: arSA })}
-              </span>
-              <span className="text-lg lg:text-xl font-medium text-white/70">
-                {format(currentTime, 'a', { locale: arSA })}
+            <button 
+              onClick={() => setIsSidebarOpen(true)}
+              className="p-2.5 lg:p-3 rounded-2xl backdrop-blur-md bg-white/5 border border-white/10 text-white hover:text-white hover:bg-white/10 transition-colors flex items-center gap-2 lg:gap-3 shadow-xl"
+              title="بيانات الخدمات"
+            >
+              <Menu className="w-5 h-5" />
+              <span className="hidden sm:inline font-medium text-sm lg:text-base">الخدمات</span>
+            </button>
+            <button 
+              onClick={toggleFullscreen}
+              className="p-2.5 lg:p-3 rounded-2xl backdrop-blur-md bg-white/5 border border-white/10 text-white/50 hover:text-white/90 hover:bg-white/10 transition-colors"
+              title="ملء الشاشة"
+            >
+              {isFullscreen ? <Minimize className="w-5 h-5" /> : <Maximize className="w-5 h-5" />}
+            </button>
+            <div className="flex flex-col items-end backdrop-blur-md bg-white/5 border border-white/10 px-3 py-2 lg:px-5 lg:py-3 rounded-2xl shadow-xl">
+              <div className="flex items-center gap-2 lg:gap-3">
+                <span className="text-xl lg:text-3xl font-light tabular-nums tracking-wider dir-ltr">
+                  {format(currentTime, 'hh:mm', { locale: arSA })}
+                </span>
+                <span className="text-base lg:text-lg font-medium text-white/70">
+                  {format(currentTime, 'a', { locale: arSA })}
+                </span>
+              </div>
+              <span className="text-xs lg:text-base text-white/60 mt-1 font-serif hidden sm:block">
+                {format(currentTime, 'EEEE، d MMMM yyyy', { locale: arSA })}
               </span>
             </div>
-            <span className="text-sm lg:text-lg text-white/60 mt-1 font-serif hidden sm:block">
-              {format(currentTime, 'EEEE، d MMMM yyyy', { locale: arSA })}
-            </span>
           </motion.div>
         </header>
 
         {/* Center Welcome Message */}
-        <div className="flex-1 flex flex-col items-center justify-center text-center w-full mx-auto min-h-0 py-8">
+        <div className="flex-1 flex flex-col items-center w-full mx-auto min-h-0 py-2 lg:py-4 overflow-hidden">
           <AnimatePresence mode="wait">
             {chaletData?.guestName ? (
-              <motion.div
+               <motion.div
                 key="welcome"
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 1.05 }}
                 transition={{ duration: 1.5, ease: "easeOut" }}
-                className="w-full flex flex-col items-center justify-center gap-[1.5vh] lg:gap-[3vh]"
+                className="w-full flex flex-col items-center gap-2 lg:gap-4 my-auto py-2"
               >
-                <h2 className="text-[clamp(3rem,8vmin,12rem)] font-serif text-white/95 font-bold drop-shadow-2xl leading-tight text-center w-full">
+                <h2 className="text-[clamp(1.5rem,6vmin,5rem)] font-serif text-white/95 font-bold drop-shadow-2xl leading-tight text-center w-full shrink-0">
                   مرحباً بكم
                 </h2>
-                <h3 className="text-[clamp(2.5rem,7vmin,10rem)] font-serif text-pink-200 drop-shadow-xl font-bold leading-tight text-center w-full">
+                <h3 className="text-[clamp(1.2rem,5vmin,4.5rem)] font-serif text-amber-300 drop-shadow-xl font-bold leading-tight text-center w-full shrink-0">
                   {chaletData.guestName}
                 </h3>
                 <motion.div 
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 1.5, delay: 0.5 }}
-                  className="text-[clamp(1.2rem,4vmin,5rem)] leading-[1.6] lg:leading-[1.8] text-white/90 font-serif font-medium w-full max-w-[90vw] mx-auto shadow-black drop-shadow-2xl px-4 text-center mt-[1vh]"
+                  className="text-[clamp(0.9rem,2.8vmin,2rem)] leading-[1.6] lg:leading-[1.8] text-white/90 font-serif font-medium w-full max-w-[95vw] lg:max-w-[80vw] mx-auto shadow-black drop-shadow-2xl px-2 lg:px-4 text-center mt-2 lg:mt-4 shrink-0"
                 >
                   {chaletData.welcomeMessage?.trim() ? (
                     chaletData.welcomeMessage.split('\n').map((line, i) => (
@@ -162,7 +201,7 @@ export default function TV({ id }: { id: string }) {
                     ))
                   ) : (
                     <>
-                      بين هدوء المكان وجمال اللحظات... يسعدنا أن نرحب بكم في شاليهات مكتنف.<br/>
+                      بين هدوء المكان وجمال اللحظات... يسعدنا أن نرحب بكم في <span className="text-amber-300">شاليهات مكتنف</span>.<br/>
                       نتمنى لكم إقامة مليئة بالراحة، والسكينة، والذكريات الجميلة التي تبقى في القلب.<br/>
                       أهلاً وسهلاً بكم... ونتمنى أن تكون هذه الليلة بداية لحكاية لا تُنسى.
                     </>
@@ -174,12 +213,12 @@ export default function TV({ id }: { id: string }) {
                 key="empty"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="w-full flex flex-col items-center justify-center gap-[2vh] lg:gap-[4vh]"
+                className="w-full flex flex-col items-center gap-2 lg:gap-4 my-auto py-2"
               >
-                <h2 className="text-[clamp(2.5rem,8vmin,12rem)] font-serif text-white/90 font-bold drop-shadow-2xl leading-tight text-center w-full">
-                  مرحباً بكم في شاليهات مكتنف
+                <h2 className="text-[clamp(1.5rem,6vmin,5rem)] font-serif text-white/90 font-bold drop-shadow-2xl leading-tight text-center w-full">
+                  مرحباً بكم في <span className="text-amber-300">شاليهات مكتنف</span>
                 </h2>
-                <p className="text-[clamp(1.5rem,5vmin,6rem)] leading-[1.6] lg:leading-[1.8] text-white/80 font-serif font-light text-center w-full mt-2">
+                <p className="text-[clamp(1.1rem,3.5vmin,2.5rem)] leading-[1.6] lg:leading-[1.8] text-white/80 font-serif font-light text-center w-full mt-2">
                   في انتظار ضيوفنا الكرام...
                 </p>
               </motion.div>
@@ -187,50 +226,79 @@ export default function TV({ id }: { id: string }) {
           </AnimatePresence>
         </div>
 
-        {/* Info Cards Footer */}
-        <motion.div 
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.5, delay: 1 }}
-          className="grid grid-cols-3 gap-2 lg:gap-6 shrink-0 mt-2"
-        >
-          {/* Door Password Card */}
-          <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-2 lg:p-4 flex flex-col items-center text-center shadow-2xl relative overflow-hidden group">
-            <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            <div className="w-6 h-6 lg:w-10 lg:h-10 bg-white/10 rounded-lg lg:rounded-xl flex items-center justify-center mb-1 lg:mb-2 text-amber-200 shrink-0">
-              <Key className="w-3 h-3 lg:w-5 lg:h-5" />
-            </div>
-            <h4 className="text-[clamp(0.7rem,2.5vmin,1.2rem)] text-white/70 mb-0.5 lg:mb-1 whitespace-nowrap">كلمة مرور الباب</h4>
-            <p className="text-[clamp(1rem,4vmin,2rem)] font-medium tracking-widest text-white dir-ltr leading-none mt-1">
-              {chaletData?.doorPassword || "----"}
-            </p>
-          </div>
-
-          {/* Wi-Fi Card */}
-          <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-2 lg:p-4 flex flex-col items-center text-center shadow-2xl relative overflow-hidden group">
-            <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            <div className="w-6 h-6 lg:w-10 lg:h-10 bg-white/10 rounded-lg lg:rounded-xl flex items-center justify-center mb-1 lg:mb-2 text-blue-300 shrink-0">
-              <Wifi className="w-3 h-3 lg:w-5 lg:h-5" />
-            </div>
-            <h4 className="text-[clamp(0.7rem,2.5vmin,1.2rem)] text-white/70 mb-0.5 lg:mb-1 whitespace-nowrap">شبكة Wi-Fi</h4>
-            <p className="text-[clamp(1rem,4vmin,2rem)] font-medium tracking-wider text-white dir-ltr leading-none mt-1">
-              {chaletData?.wifiPassword || "----"}
-            </p>
-          </div>
-
-          {/* Admin Phone Card */}
-          <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-2 lg:p-4 flex flex-col items-center text-center shadow-2xl relative overflow-hidden group">
-            <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            <div className="w-6 h-6 lg:w-10 lg:h-10 bg-white/10 rounded-lg lg:rounded-xl flex items-center justify-center mb-1 lg:mb-2 text-emerald-300 shrink-0">
-              <Phone className="w-3 h-3 lg:w-5 lg:h-5" />
-            </div>
-            <h4 className="text-[clamp(0.7rem,2.5vmin,1.2rem)] text-white/70 mb-0.5 lg:mb-1 whitespace-nowrap">التواصل للإدارة</h4>
-            <p className="text-[clamp(1rem,4vmin,2rem)] font-medium tracking-widest text-white dir-ltr leading-none mt-1">
-              {chaletData?.adminPhone || "----"}
-            </p>
-          </div>
-        </motion.div>
       </div>
+
+      {/* Services Sidebar */}
+      <AnimatePresence>
+        {isSidebarOpen && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsSidebarOpen(false)}
+              className="absolute inset-0 bg-black/60 backdrop-blur-sm z-40"
+            />
+            {/* Sidebar */}
+            <motion.div
+              initial={{ x: '-100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '-100%' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className="absolute top-0 left-0 bottom-0 w-[80vw] sm:w-[320px] lg:w-[380px] bg-slate-900/90 backdrop-blur-2xl border-r border-white/10 z-50 flex flex-col p-5 lg:p-6 overflow-y-auto"
+            >
+              <div className="flex items-center justify-between mb-6 border-b border-white/10 pb-4 shrink-0">
+                <button 
+                  onClick={() => setIsSidebarOpen(false)}
+                  className="p-1.5 rounded-full hover:bg-white/10 text-white/70 hover:text-white transition-colors"
+                >
+                  <X className="w-5 h-5 lg:w-6 lg:h-6" />
+                </button>
+                <h3 className="text-lg lg:text-xl font-serif font-bold text-white flex items-center gap-2">
+                  بيانات الخدمات
+                  <Info className="w-4 h-4 lg:w-5 lg:h-5 text-blue-400" />
+                </h3>
+              </div>
+
+              <div className="flex flex-col gap-3 lg:gap-4 flex-1">
+                {/* Door Password Card */}
+                <div className="bg-white/5 border border-white/10 rounded-2xl p-4 lg:p-6 flex flex-col items-center text-center shadow-lg">
+                  <div className="w-10 h-10 lg:w-12 lg:h-12 bg-white/10 rounded-2xl flex items-center justify-center mb-3 text-amber-200">
+                    <Key className="w-5 h-5 lg:w-6 lg:h-6" />
+                  </div>
+                  <h4 className="text-base lg:text-lg text-white/70 mb-1">كلمة مرور الباب</h4>
+                  <p className="text-2xl lg:text-4xl font-bold tracking-widest text-white dir-ltr leading-none mt-1">
+                    {chaletData?.doorPassword || "----"}
+                  </p>
+                </div>
+
+                {/* Wi-Fi Card */}
+                <div className="bg-white/5 border border-white/10 rounded-2xl p-4 lg:p-6 flex flex-col items-center text-center shadow-lg">
+                  <div className="w-10 h-10 lg:w-12 lg:h-12 bg-white/10 rounded-2xl flex items-center justify-center mb-3 text-blue-300">
+                    <Wifi className="w-5 h-5 lg:w-6 lg:h-6" />
+                  </div>
+                  <h4 className="text-base lg:text-lg text-white/70 mb-1">شبكة Wi-Fi</h4>
+                  <p className="text-2xl lg:text-4xl font-bold tracking-wider text-white dir-ltr leading-none mt-1">
+                    {chaletData?.wifiPassword || "----"}
+                  </p>
+                </div>
+
+                {/* Admin Phone Card */}
+                <div className="bg-white/5 border border-white/10 rounded-2xl p-4 lg:p-6 flex flex-col items-center text-center shadow-lg">
+                  <div className="w-10 h-10 lg:w-12 lg:h-12 bg-white/10 rounded-2xl flex items-center justify-center mb-3 text-emerald-300">
+                    <Phone className="w-5 h-5 lg:w-6 lg:h-6" />
+                  </div>
+                  <h4 className="text-base lg:text-lg text-white/70 mb-1">التواصل للإدارة</h4>
+                  <p className="text-2xl lg:text-4xl font-bold tracking-widest text-white dir-ltr leading-none mt-1">
+                    {chaletData?.adminPhone || "----"}
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
